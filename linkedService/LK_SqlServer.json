@@ -1,0 +1,28 @@
+{
+	"name": "LK_SqlServer",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "GUNA_SEKHAR\\MSLOCALDB",
+			"database": "ms_migration",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "SQL",
+			"userName": "sa",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AKV_LK_sql_server",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sqlServerPW",
+				"secretVersion": "2c9b9218959a4d2b88c5452ae1f025f7"
+			}
+		},
+		"connectVia": {
+			"referenceName": "intExternal",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
