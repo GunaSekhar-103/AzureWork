@@ -1,0 +1,72 @@
+{
+	"name": "ParentPipeline",
+	"properties": {
+		"description": "lkp watermark - for each table - exec inc pipline",
+		"activities": [
+			{
+				"name": "lkp_watermark",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "select TableSchema, TableName, WatermarkColumn, LastLoadValue from dbo.ADF_Watermark_Table2",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SqlServerTable",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "FE_table",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "lkp_watermark",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('lkp_watermark').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "ppl_Incremental",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "ppl_Child_Inc",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					]
+				}
+			}
+		],
+		"annotations": []
+	}
+}
