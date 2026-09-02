@@ -1,0 +1,62 @@
+{
+	"name": "ppl_child_SP",
+	"properties": {
+		"activities": [
+			{
+				"name": "sp_UPD_WMtable",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[UpdateWatermark]",
+					"storedProcedureParameters": {
+						"SchemaName": {
+							"value": {
+								"value": "@pipeline().parameters.SchemaName",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TableName": {
+							"value": {
+								"value": "@pipeline().parameters.TableName",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"WM_Column": {
+							"value": {
+								"value": "@pipeline().parameters.WM_Column",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LK_SqlServer",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"SchemaName": {
+				"type": "string"
+			},
+			"TableName": {
+				"type": "string"
+			},
+			"WM_Column": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}

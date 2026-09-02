@@ -3,26 +3,170 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Set variable1",
-				"type": "SetVariable",
+				"name": "LKP_Max_Val",
+				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "pipelineReturnValue",
-					"value": [
-						{
-							"key": "tb",
-							"value": {
-								"type": "String",
-								"content": "a"
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "select \nmax(pipeline().parameters.WMcolumn) as MaxVal\nfrom pipeline().parameters.schema.pipeline().parameters.name",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DB_maxVal",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": {
+								"value": "@pipeline().parameters.schema",
+								"type": "Expression"
+							},
+							"TableName": {
+								"value": "@pipeline().parameters.name",
+								"type": "Expression"
 							}
 						}
-					],
-					"setSystemVariable": true
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "If_New_Rec",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "LKP_Max_Val",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@or(\nequals(pipeline().parameters.LLvalue, null), \ngreater(int(activity('LKP_Max_Val').output.MaxVal),\n        int(pipeline().parameters.LLvalue))\n        )",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "CP_IncLoad",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"sqlReaderQuery": {
+										"value": "@concat('select * from ',\n\t\tpipeline().parameters.schema,'.'\n\t\t,pipeline().parameters.name,\n\t\tif(equals(pipeline().parameters.LLvalue, null),'',\n\tconcat('where ', \n\t\t\tpipeline().parameters.WMcolumn,\n\t\t\t'>', \n\t\t\tpipeline().parameters.LLvalue)\n\t\t\t)\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DB_maxVal",
+									"type": "DatasetReference",
+									"parameters": {
+										"SchemaName": {
+											"value": "@pipeline().parameters.schema",
+											"type": "Expression"
+										},
+										"TableName": {
+											"value": "@pipeline().parameters.name",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DB_Parquet_Mig",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": {
+											"value": "@pipeline().parameters.name",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Child pp SP",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "CP_IncLoad",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "ppl_child_SP",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"SchemaName": {
+										"value": "@pipeline().parameters.schema",
+										"type": "Expression"
+									},
+									"TableName": {
+										"value": "@pipeline().parameters.name",
+										"type": "Expression"
+									},
+									"WM_Column": {
+										"value": "@pipeline().parameters.WMcolumn",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
 				}
 			}
 		],
