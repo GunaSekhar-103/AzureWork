@@ -1,0 +1,10 @@
+{
+	"name": "LK_msSqlLocal",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://msSqlLocal.vault.azure.net/"
+		}
+	}
+}
