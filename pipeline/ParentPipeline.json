@@ -30,7 +30,7 @@
 				}
 			},
 			{
-				"name": "FE_table",
+				"name": "FE_tableValue",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -48,7 +48,7 @@
 					},
 					"activities": [
 						{
-							"name": "ppl_Incremental",
+							"name": "Execute Pipeline1",
 							"type": "ExecutePipeline",
 							"dependsOn": [],
 							"policy": {
@@ -57,10 +57,28 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "ppl_Child_Inc",
+									"referenceName": "ppl_Chaild Incremental",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"schema": {
+										"value": "@item().TableSchema",
+										"type": "Expression"
+									},
+									"name": {
+										"value": "@item().TableName",
+										"type": "Expression"
+									},
+									"WMcolumn": {
+										"value": "@item().WatermarkColumn",
+										"type": "Expression"
+									},
+									"LLvalue": {
+										"value": "@item().LastLoadValue",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]

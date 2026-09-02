@@ -1,0 +1,45 @@
+{
+	"name": "ppl_Chaild Incremental",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "pipelineReturnValue",
+					"value": [
+						{
+							"key": "tb",
+							"value": {
+								"type": "String",
+								"content": "a"
+							}
+						}
+					],
+					"setSystemVariable": true
+				}
+			}
+		],
+		"parameters": {
+			"schema": {
+				"type": "string"
+			},
+			"name": {
+				"type": "string"
+			},
+			"WMcolumn": {
+				"type": "string"
+			},
+			"LLvalue": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
