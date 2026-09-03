@@ -75,7 +75,7 @@
 								"source": {
 									"type": "SqlServerSource",
 									"sqlReaderQuery": {
-										"value": "@concat('select * from ',\n\t\tpipeline().parameters.schema,'.'\n\t\t,pipeline().parameters.name,\n\t\tif(equals(pipeline().parameters.LLvalue, null),'',\n\tconcat('where ', \n\t\t\tpipeline().parameters.WMcolumn,\n\t\t\t'>', \n\t\t\tpipeline().parameters.LLvalue)\n\t\t\t)\n)",
+										"value": "@concat('select * from ',\n\t\tpipeline().parameters.schema,'.'\n\t\t,pipeline().parameters.name,\n\t\tif(equals(pipeline().parameters.LLvalue, null),'',\n\tconcat(' where ', \n\t\t\tpipeline().parameters.WMcolumn,\n\t\t\t'>', \n\t\t\tpipeline().parameters.LLvalue)\n\t\t\t)\n)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
