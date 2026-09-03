@@ -38,7 +38,7 @@
 							}
 						}
 					},
-					"firstRowOnly": true
+					"firstRowOnly": false
 				}
 			},
 			{
@@ -182,6 +182,11 @@
 			},
 			"LLvalue": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"sn": {
+				"type": "String"
 			}
 		},
 		"annotations": []
