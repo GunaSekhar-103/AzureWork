@@ -57,17 +57,6 @@
 				"type": "string"
 			}
 		},
-		"variables": {
-			"SN": {
-				"type": "String"
-			},
-			"WM": {
-				"type": "String"
-			},
-			"TN": {
-				"type": "String"
-			}
-		},
 		"annotations": []
 	}
 }
