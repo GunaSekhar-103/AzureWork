@@ -18,7 +18,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "select \nmax(pipeline().parameters.WMcolumn) as MaxVal\nfrom pipeline().parameters.schema.pipeline().parameters.name",
+							"value": "select \nmax(@{pipeline().parameters.WMcolumn}) as MaxVal\nfrom @{pipeline().parameters.schema}.@{pipeline().parameters.name}",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -55,7 +55,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@or(\nequals(pipeline().parameters.LLvalue, null), \ngreater(int(activity('LKP_Max_Val').output.MaxVal),\n        int(pipeline().parameters.LLvalue))\n        )",
+						"value": "@or(\n    equals(pipeline().parameters.LLvalue, null),\n    greater(\n        int(activity('LKP_Max_Val').output.value[0].MaxVal),\n        int(pipeline().parameters.LLvalue)\n    )\n)",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
