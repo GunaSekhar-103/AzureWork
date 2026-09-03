@@ -18,7 +18,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "select TableSchema, TableName, WatermarkColumn, LastLoadValue from dbo.ADF_Watermark_Table2",
+						"sqlReaderQuery": "select TableSchema, TableName, WatermarkColumn, LastLoadValue from dbo.ADF_Watermark_Table",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
