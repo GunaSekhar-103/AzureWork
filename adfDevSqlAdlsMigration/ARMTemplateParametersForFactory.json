@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adfDevSqlAdlsMigration"
+		},
+		"LK_ADL_ming_accountKey": {
+			"value": ""
+		},
+		"LK_Adls_Mig_accountKey": {
+			"value": ""
+		},
+		"AKV_LK_sql_server_properties_typeProperties_baseUrl": {
+			"value": "https://msSqlLocal.vault.azure.net/"
+		},
+		"LK_ADL_ming_properties_typeProperties_url": {
+			"value": "https://adlsdevsqladlsmigration.dfs.core.windows.net/"
+		},
+		"LK_Adls_Mig_properties_typeProperties_url": {
+			"value": "https://adlsdevsqladlsmigration.dfs.core.windows.net/"
+		},
+		"LK_SqlServer_properties_typeProperties_server": {
+			"value": "GUNA_SEKHAR\\MSLOCALDB"
+		},
+		"LK_SqlServer_properties_typeProperties_database": {
+			"value": "ms_migration"
+		},
+		"LK_SqlServer_properties_typeProperties_userName": {
+			"value": "sa"
+		}
+	}
+}
