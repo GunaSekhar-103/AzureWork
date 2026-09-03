@@ -186,7 +186,7 @@
 									}
 								}
 							},
-							"firstRowOnly": true
+							"firstRowOnly": false
 						}
 					},
 					{
@@ -335,6 +335,11 @@
 						"type": "string"
 					}
 				},
+				"variables": {
+					"sn": {
+						"type": "String"
+					}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -364,7 +369,7 @@
 						"typeProperties": {
 							"storedProcedureName": "[[dbo].[UpdateWatermark]",
 							"storedProcedureParameters": {
-								"SchemaName": {
+								"TableSchema": {
 									"value": {
 										"value": "@pipeline().parameters.SchemaName",
 										"type": "Expression"
@@ -378,7 +383,7 @@
 									},
 									"type": "String"
 								},
-								"WM_Column": {
+								"WatermarkColumn": {
 									"value": {
 										"value": "@pipeline().parameters.WM_Column",
 										"type": "Expression"
