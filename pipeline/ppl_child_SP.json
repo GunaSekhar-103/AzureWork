@@ -44,57 +44,6 @@
 					"referenceName": "LK_SqlServer",
 					"type": "LinkedServiceReference"
 				}
-			},
-			{
-				"name": "SchemaName",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "SN",
-					"value": {
-						"value": "@pipeline().parameters.SchemaName",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "TableName",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "TN",
-					"value": {
-						"value": "@pipeline().parameters.TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "WM Name",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "WM",
-					"value": {
-						"value": "@pipeline().parameters.WM_Column",
-						"type": "Expression"
-					}
-				}
 			}
 		],
 		"parameters": {
